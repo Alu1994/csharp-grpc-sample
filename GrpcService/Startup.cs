@@ -17,6 +17,7 @@ namespace GrpcService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
+            services.AddSingleton(new TestgRPCDI { Name = "Matheus", Age = 25 });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

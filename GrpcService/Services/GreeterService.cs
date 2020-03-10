@@ -7,9 +7,12 @@ namespace GrpcService
     public class GreeterService : Greeter.GreeterBase
     {
         private readonly ILogger<GreeterService> _logger;
-        public GreeterService(ILogger<GreeterService> logger)
+        private readonly TestgRPCDI _testgRPCDI;
+
+        public GreeterService(ILogger<GreeterService> logger, TestgRPCDI testgRPCDI)
         {
             _logger = logger;
+            _testgRPCDI = testgRPCDI;
         }
 
         public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
@@ -33,6 +36,10 @@ namespace GrpcService
                 var message = new HelloReply { Message = text };
                 await responseStream.WriteAsync(message);
             }
+
+            await Task.Delay(1000);
+            var messageAge = new HelloReply { Message = $"Age: {_testgRPCDI.Age.ToString()}" };
+            await responseStream.WriteAsync(messageAge);
         }
     }
 }
